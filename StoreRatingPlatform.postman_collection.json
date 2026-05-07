@@ -1,0 +1,265 @@
+{
+  "info": {
+    "name": "Store Rating Platform API",
+    "description": "Complete API collection for the Store Rating Platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000/api" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/register",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Regular Platform User Alice Johnson\",\n  \"email\": \"alice@example.com\",\n  \"address\": \"100 User Lane, Staten Island, NY 10301\",\n  \"password\": \"Password@1\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login (Admin)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": ["const r = pm.response.json();", "if (r.access_token) pm.collectionVariables.set('token', r.access_token);"]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@storerating.com\",\n  \"password\": \"Admin@123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login (User)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": ["const r = pm.response.json();", "if (r.access_token) pm.collectionVariables.set('token', r.access_token);"]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"alice@example.com\",\n  \"password\": \"Admin@123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login (Store Owner)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": ["const r = pm.response.json();", "if (r.access_token) pm.collectionVariables.set('token', r.access_token);"]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"owner1@coffeehouse.com\",\n  \"password\": \"Admin@123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Password",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/auth/update-password",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"Admin@123\",\n  \"newPassword\": \"NewPass@1\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Get Dashboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/admin/dashboard",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/admin/users",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"New Store Owner Account Person\",\n  \"email\": \"newowner@example.com\",\n  \"address\": \"500 Owner Street, Chicago, IL 60601\",\n  \"password\": \"Password@1\",\n  \"role\": \"STORE_OWNER\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Create Store",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/admin/stores",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"New Electronics Mega Store\",\n  \"email\": \"store@newelectronics.com\",\n  \"address\": \"200 Tech Avenue, San Francisco, CA 94105\",\n  \"ownerId\": \"<owner-uuid-here>\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Users (with filters)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/admin/users?name=alice&role=USER&sortBy=name&sortOrder=asc",
+              "query": [
+                { "key": "name", "value": "alice" },
+                { "key": "role", "value": "USER" },
+                { "key": "sortBy", "value": "name" },
+                { "key": "sortOrder", "value": "asc" }
+              ]
+            },
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Get Stores",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/admin/stores",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/admin/users/<user-uuid>",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Get Available Store Owners",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/admin/store-owners/available",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Stores (User)",
+      "item": [
+        {
+          "name": "Get All Stores",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/stores",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Search Stores",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/stores/search?name=coffee&address=brooklyn",
+              "query": [
+                { "key": "name", "value": "coffee" },
+                { "key": "address", "value": "brooklyn" }
+              ]
+            },
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ratings",
+      "item": [
+        {
+          "name": "Submit Rating",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/ratings",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"storeId\": \"<store-uuid-here>\",\n  \"rating\": 4\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Rating",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/ratings/<rating-uuid>",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 5\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Store Owner",
+      "item": [
+        {
+          "name": "Get Owner Dashboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/owner/dashboard",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        },
+        {
+          "name": "Get Owner Ratings",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/owner/ratings",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          }
+        }
+      ]
+    }
+  ]
+}
