@@ -8,7 +8,7 @@ A full-stack role-based web application where users can rate stores (1–5 stars
 
 | Layer | Technology |
 |-------|------------|
-| Backend | NestJS (Node.js) |
+| Backend | Node.js |
 | Database | PostgreSQL |
 | ORM | Prisma |
 | Frontend | React.js + Vite |
@@ -315,7 +315,3 @@ The **Login** requests automatically save the JWT token to `{{token}}` via a tes
 - Prisma prevents SQL injection by design
 
 ---
-
-## 📝 License
-
-MIT
