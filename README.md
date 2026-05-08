@@ -276,26 +276,6 @@ VITE_API_URL=http://localhost:3000/api
 
 ---
 
-## 🚢 Deployment
-
-### Backend → Render
-1. Create a new **Web Service** on [render.com](https://render.com)
-2. Connect GitHub repo, set root directory to `backend`
-3. Build command: `npm install && npx prisma generate && npm run build`
-4. Start command: `npx prisma migrate deploy && node dist/main`
-5. Add environment variables from `.env.example`
-
-### Database → Neon
-1. Create a free project on [neon.tech](https://neon.tech)
-2. Copy the connection string to `DATABASE_URL`
-
-### Frontend → Vercel
-1. Import repo on [vercel.com](https://vercel.com)
-2. Set root directory to `frontend`
-3. Add `VITE_API_URL=https://your-render-url.onrender.com/api`
-4. Deploy!
-
----
 
 ## 📮 Postman Collection
 
